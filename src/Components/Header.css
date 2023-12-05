@@ -1,0 +1,5 @@
+.header {
+    background-color: var(--color-primary-light);
+    border-radius: 9px;
+    padding: 1.4rem 2.8rem;
+}

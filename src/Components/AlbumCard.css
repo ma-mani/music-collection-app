@@ -1,0 +1,25 @@
+.list {
+    margin-bottom: 1.6rem;
+}
+
+.list button {
+    border: none;
+    cursor: pointer;
+    appearance: none;
+    background-color: inherit;
+}
+
+.list img {
+    border-radius: 9px;
+    width: 100%;
+}
+
+.list__info {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+}
+
+.list__info-author {
+    color: var(--color-text-artist);
+}
