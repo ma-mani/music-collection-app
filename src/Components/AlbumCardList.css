@@ -1,0 +1,6 @@
+.album {
+    background-color: var(--color-background-500);
+    list-style: none;
+    padding: 3.2rem;
+    border-radius: 9px;
+}

@@ -1,0 +1,10 @@
+.tracks {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-background-100);
+    margin-top: 0.8rem;
+    border-radius: 9px;
+    padding: 0.8rem 1.6rem;
+    transition: 3s ease-in;
+}
