@@ -1,16 +1,18 @@
-import './AlbumCardList.css';
+import './AlbumList.css';
 
 import {Album} from '../types/data';
 import AlbumCard from './AlbumCard';
 
 interface Props {
     data: Album[];
+    title: string;
 }
 
-const AlbumCardList = ({data}: Props) => {
+const AlbumList = ({data, title}: Props) => {
     return (
-        <>
-            <ul className='album'>
+        <div className='album'>
+            <h2>{title}</h2>
+            <ul className='albumlist'>
                 {data.map((item) => (
                     <AlbumCard
                         key={item.id}
@@ -21,8 +23,8 @@ const AlbumCardList = ({data}: Props) => {
                     />
                 ))}
             </ul>
-        </>
+        </div>
     );
 };
 
-export default AlbumCardList;
+export default AlbumList;
