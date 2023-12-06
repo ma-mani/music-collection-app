@@ -1,6 +1,6 @@
 import './AlbumList.css';
 
-import {Album} from '../types/data';
+import { Album } from '../types/data';
 import AlbumCard from './AlbumCard';
 
 interface Props {

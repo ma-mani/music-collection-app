@@ -1,11 +1,11 @@
 import './App.css';
 
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 
 import AlbumList from './Components/AlbumList';
 import Header from './Components/Header';
 import SearchBar from './Components/SearchBar';
-import {Album} from './types/data';
+import { Album } from './types/data';
 
 function App() {
     const [data, setData] = useState<Album[]>([]);
@@ -18,12 +18,14 @@ function App() {
         setCurrentPage('SEARCHED');
     };
 
+    const baseURL = 'https://neuefische-spotify-proxy.vercel.app/api';
+
     useEffect(() => {
         async function fetchData() {
             const URL =
                 currentPage === 'FEATURE'
-                    ? 'https://neuefische-spotify-proxy.vercel.app/api/featured'
-                    : `https://neuefische-spotify-proxy.vercel.app/api/search?artist=${queryName}`;
+                    ? `${baseURL}/featured`
+                    : `${baseURL}/search?artist=${queryName}`;
             setIsLoading(true);
             try {
                 const res = await fetch(URL);
@@ -41,12 +43,12 @@ function App() {
 
     return (
         <main className='app'>
+            <Header>Music Collector</Header>
+            <SearchBar onSearchName={handleSearchName} />
             {isLoading ? (
                 <p style={{fontSize: 50}}>Is Loading ...</p>
             ) : (
                 <>
-                    <Header>Music Collector</Header>
-                    <SearchBar onSearchName={handleSearchName} />
                     <AlbumList
                         data={data}
                         title={
