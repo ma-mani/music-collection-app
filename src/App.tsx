@@ -1,12 +1,14 @@
 import './App.css';
 
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import useLocalStorageState from 'use-local-storage-state';
 
 import AlbumList from './Components/AlbumList';
 import Header from './Components/Header';
+import Navigation from './Components/Navigation';
 import SearchBar from './Components/SearchBar';
-import { Album } from './types/data';
+import SearchPage from './pages/Search';
+import {Album} from './types/data';
 
 function App() {
     const [data, setData] = useState<Album[]>([]);
@@ -86,39 +88,43 @@ function App() {
     }, [savedAlbumIds]);
 
     return (
-        <main className='app'>
-            <Header>Music Collector</Header>
-            <SearchBar onSearchName={handleSearchName} />
-            {isLoading ? (
-                <p className='loader'></p>
-            ) : (
-                <>
-                    {data.length !== 0 ? (
-                        <AlbumList
-                            onToggleId={handleToggleSavedAlbum}
-                            data={data}
-                            title={
-                                currentPage === 'SEARCHED'
-                                    ? `Results for: ${queryName}`
-                                    : 'Featured'
-                            }
-                            savedAlbumIds={savedAlbumIds}
-                        />
-                    ) : (
-                        <p>No Albums :/</p>
-                    )}
+        <>
+            <Navigation />
+            <main className='app'>
+                <Header>Music Collector</Header>
+                <SearchPage onSearchName={handleSearchName} />
 
-                    {savedData.length !== 0 ? (
-                        <AlbumList
-                            onToggleId={handleToggleSavedAlbum}
-                            data={savedData}
-                            title={'Saved Albums'}
-                            savedAlbumIds={savedAlbumIds}
-                        />
-                    ) : null}
-                </>
-            )}
-        </main>
+                {isLoading ? (
+                    <p className='loader'></p>
+                ) : (
+                    <>
+                        {data.length !== 0 ? (
+                            <AlbumList
+                                onToggleId={handleToggleSavedAlbum}
+                                data={data}
+                                title={
+                                    currentPage === 'SEARCHED'
+                                        ? `Results for: ${queryName}`
+                                        : 'Featured'
+                                }
+                                savedAlbumIds={savedAlbumIds}
+                            />
+                        ) : (
+                            <p>No Albums :/</p>
+                        )}
+
+                        {savedData.length !== 0 ? (
+                            <AlbumList
+                                onToggleId={handleToggleSavedAlbum}
+                                data={savedData}
+                                title={'Saved Albums'}
+                                savedAlbumIds={savedAlbumIds}
+                            />
+                        ) : null}
+                    </>
+                )}
+            </main>
+        </>
     );
 }
 
