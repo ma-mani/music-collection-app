@@ -1,20 +1,32 @@
 import './Navigation.css';
 
-import SongList from './SongList';
+export type PageName = 'home' | 'search' | 'albums';
 
-const Navigation = () => {
+interface Props {
+    onClickPage: (page: PageName) => void;
+    currentPage: PageName;
+}
+
+const pageNames: PageName[] = ['home', 'search', 'albums'];
+
+const Navigation = ({onClickPage, currentPage}: Props) => {
     return (
         <nav className='navigation'>
             <ul>
-                <li>
-                    <a href='#home'>Home</a>
-                </li>
-                <li>
-                    <a href='#search'>Search</a>
-                </li>
-                <li>
-                    <a href='#albums'>Albums</a>
-                </li>
+                {pageNames.map((pageName: PageName) => (
+                    <li key={pageName}>
+                        <a
+                            className={currentPage === pageName ? 'active' : ''}
+                            onClick={(event) => {
+                                event.preventDefault();
+                                onClickPage(pageName);
+                            }}
+                            href={`#${pageName}`}
+                        >
+                            {pageName}
+                        </a>
+                    </li>
+                ))}
             </ul>
         </nav>
     );

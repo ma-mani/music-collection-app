@@ -8,9 +8,18 @@ interface Props {
     title: string;
     onToggleId: (id: string) => void;
     savedAlbumIds: string[];
+    emptyComponent?: JSX.Element;
 }
 
-const AlbumList = ({data, title, onToggleId, savedAlbumIds}: Props) => {
+const AlbumList = ({
+    data,
+    title,
+    onToggleId,
+    savedAlbumIds,
+    emptyComponent,
+}: Props) => {
+    if (!data.length) return emptyComponent ?? <></>;
+
     return (
         <div className='album'>
             <h2>{title}</h2>
