@@ -41,6 +41,10 @@
     border-bottom: 1px solid var(--color-primary);
 }
 
+.list__info.change__bottomline {
+    border-bottom: 1px solid var(--color-secondary-100);
+}
+
 .list__info-author {
     color: var(--color-text-artist);
 }

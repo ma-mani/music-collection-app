@@ -1,8 +1,8 @@
 import './AlbumCard.css';
 
-import { useState } from 'react';
+import {useState} from 'react';
 
-import { Album } from '../types/data';
+import {Album} from '../types/data';
 import SongList from './SongList';
 
 interface Props extends Omit<Album, 'release_date' | 'uri'> {
@@ -33,14 +33,18 @@ const AlbumCard = ({
                     <img src={image?.url} alt='' />
                 </button>
                 <button
-                    onClick={() => onToggleId(id as string)}
+                    onClick={() => onToggleId(id)}
                     className={`button__save ${checkSaved ? 'change__bg' : ''}`}
                 >
                     {checkSaved ? 'saved' : 'save'}
                 </button>
             </div>
 
-            <div className='list__info'>
+            <div
+                className={`list__info ${
+                    checkSaved ? 'change__bottomline' : ''
+                }`}
+            >
                 <span className='list__info-title'>{title}</span>
                 <span className='list__info-author'>{artist}</span>
             </div>

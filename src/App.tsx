@@ -1,6 +1,7 @@
 import './App.css';
 
 import { useEffect, useState } from 'react';
+import useLocalStorageState from 'use-local-storage-state';
 
 import AlbumList from './Components/AlbumList';
 import Header from './Components/Header';
@@ -11,10 +12,18 @@ function App() {
     const [data, setData] = useState<Album[]>([]);
     const [savedData, setSavedData] = useState<Album[]>([]);
     const [isLoading, setIsLoading] = useState<Boolean>(false);
+    const [isLoadingSave, setIsLoadingSave] = useState<Boolean>(false);
     const [queryName, setQueryName] = useState('');
     const [currentPage, setCurrentPage] = useState('FEATURE');
 
     const [savedAlbumIds, setSavedAlbumIds] = useState<string[]>([]);
+
+    const [savedAlbumIds1, setSavedAlbumIds1] = useLocalStorageState<string[]>(
+        'savedAlbumIds1',
+        {
+            defaultValue: [],
+        },
+    );
 
     const handleSearchName = (data: string) => {
         setQueryName(data);
@@ -22,14 +31,14 @@ function App() {
     };
 
     const handleToggleSavedAlbum = (newId: string) => {
-        if (savedAlbumIds.includes(newId)) {
+        if (savedAlbumIds1.includes(newId)) {
             // remove id
-            setSavedAlbumIds((prevAlbumIds) =>
+            setSavedAlbumIds1((prevAlbumIds) =>
                 prevAlbumIds.filter((prevId) => prevId !== newId),
             );
         } else {
             // add id
-            setSavedAlbumIds((prevAlbumIds) => [newId, ...prevAlbumIds]);
+            setSavedAlbumIds1((prevAlbumIds) => [newId, ...prevAlbumIds]);
         }
     };
 
@@ -56,12 +65,13 @@ function App() {
         fetchData();
     }, [queryName, currentPage]);
 
+    // fetch for Save Data
     useEffect(() => {
         async function fetchSavedData() {
-            setIsLoading(true);
+            setIsLoadingSave(true);
             try {
                 const res = await fetch(
-                    `${baseURL}/albums?ids=${JSON.stringify(savedAlbumIds)}`,
+                    `${baseURL}/albums?ids=${JSON.stringify(savedAlbumIds1)}`,
                 );
                 if (!res.ok) throw new Error('fetching does not work');
                 const data = await res.json();
@@ -69,18 +79,18 @@ function App() {
             } catch (error) {
                 console.error(error);
             } finally {
-                setIsLoading(false);
+                setIsLoadingSave(false);
             }
         }
         fetchSavedData();
-    }, [savedAlbumIds]);
+    }, [savedAlbumIds1]);
 
     return (
         <main className='app'>
             <Header>Music Collector</Header>
             <SearchBar onSearchName={handleSearchName} />
             {isLoading ? (
-                <p style={{fontSize: 50}}>Is Loading ...</p>
+                <p className='loader'></p>
             ) : (
                 <>
                     {data.length !== 0 ? (
@@ -92,7 +102,7 @@ function App() {
                                     ? `Results for: ${queryName}`
                                     : 'Featured'
                             }
-                            savedAlbumIds={savedAlbumIds}
+                            savedAlbumIds={savedAlbumIds1}
                         />
                     ) : (
                         <p>No Albums :/</p>
@@ -102,8 +112,8 @@ function App() {
                         <AlbumList
                             onToggleId={handleToggleSavedAlbum}
                             data={savedData}
-                            title={'Saved'}
-                            savedAlbumIds={savedAlbumIds}
+                            title={'Saved Albums'}
+                            savedAlbumIds={savedAlbumIds1}
                         />
                     ) : null}
                 </>
