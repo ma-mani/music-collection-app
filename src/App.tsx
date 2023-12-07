@@ -14,12 +14,12 @@ function App() {
     const [isLoading, setIsLoading] = useState<Boolean>(false);
     const [isLoadingSave, setIsLoadingSave] = useState<Boolean>(false);
     const [queryName, setQueryName] = useState('');
-    const [currentPage, setCurrentPage] = useState('FEATURE');
+    const [currentPage, setCurrentPage] = useState<'FEATURE' | 'SEARCHED'>(
+        'FEATURE',
+    );
 
-    const [savedAlbumIds, setSavedAlbumIds] = useState<string[]>([]);
-
-    const [savedAlbumIds1, setSavedAlbumIds1] = useLocalStorageState<string[]>(
-        'savedAlbumIds1',
+    const [savedAlbumIds, setSavedAlbumIds] = useLocalStorageState<string[]>(
+        'savedAlbumIds',
         {
             defaultValue: [],
         },
@@ -31,14 +31,14 @@ function App() {
     };
 
     const handleToggleSavedAlbum = (newId: string) => {
-        if (savedAlbumIds1.includes(newId)) {
+        if (savedAlbumIds.includes(newId)) {
             // remove id
-            setSavedAlbumIds1((prevAlbumIds) =>
+            setSavedAlbumIds((prevAlbumIds) =>
                 prevAlbumIds.filter((prevId) => prevId !== newId),
             );
         } else {
             // add id
-            setSavedAlbumIds1((prevAlbumIds) => [newId, ...prevAlbumIds]);
+            setSavedAlbumIds((prevAlbumIds) => [newId, ...prevAlbumIds]);
         }
     };
 
@@ -71,7 +71,7 @@ function App() {
             setIsLoadingSave(true);
             try {
                 const res = await fetch(
-                    `${baseURL}/albums?ids=${JSON.stringify(savedAlbumIds1)}`,
+                    `${baseURL}/albums?ids=${JSON.stringify(savedAlbumIds)}`,
                 );
                 if (!res.ok) throw new Error('fetching does not work');
                 const data = await res.json();
@@ -83,7 +83,7 @@ function App() {
             }
         }
         fetchSavedData();
-    }, [savedAlbumIds1]);
+    }, [savedAlbumIds]);
 
     return (
         <main className='app'>
@@ -102,7 +102,7 @@ function App() {
                                     ? `Results for: ${queryName}`
                                     : 'Featured'
                             }
-                            savedAlbumIds={savedAlbumIds1}
+                            savedAlbumIds={savedAlbumIds}
                         />
                     ) : (
                         <p>No Albums :/</p>
@@ -113,7 +113,7 @@ function App() {
                             onToggleId={handleToggleSavedAlbum}
                             data={savedData}
                             title={'Saved Albums'}
-                            savedAlbumIds={savedAlbumIds1}
+                            savedAlbumIds={savedAlbumIds}
                         />
                     ) : null}
                 </>
