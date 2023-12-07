@@ -1,20 +1,52 @@
 import './AlbumCard.css';
 
-import {useState} from 'react';
+import { useState } from 'react';
 
-import {Album} from '../types/data';
+import { Album } from '../types/data';
 import SongList from './SongList';
 
-interface Props extends Partial<Album> {}
+interface Props extends Omit<Album, 'release_date' | 'uri'> {
+    onToggleId: (id: string) => void;
+    savedAlbumIds: string[];
+}
 
-const AlbumCard = ({artist, title, image, tracks}: Props) => {
+const AlbumCard = ({
+    artist,
+    title,
+    image,
+    tracks,
+    id,
+    onToggleId,
+    savedAlbumIds,
+}: Props) => {
     const [toggle, setToggle] = useState<Boolean>(false);
+
+    const checkSaved = savedAlbumIds.includes(id);
+
     return (
         <li className='list'>
-            <button onClick={() => setToggle((prevToggle) => !prevToggle)}>
-                <img src={image?.url} alt='' />
-            </button>
-            <div className='list__info'>
+            <div className='list-buttons'>
+                <button
+                    aria-label='ToggleTracks'
+                    className='image__Button'
+                    onClick={() => setToggle((prevToggle) => !prevToggle)}
+                >
+                    <img src={image?.url} alt='A Cover from Album' />
+                </button>
+                <button
+                    aria-label='ToggleSave'
+                    onClick={() => onToggleId(id)}
+                    className={`button__save ${checkSaved ? 'change__bg' : ''}`}
+                >
+                    {checkSaved ? 'saved' : 'save'}
+                </button>
+            </div>
+
+            <div
+                className={`list__info ${
+                    checkSaved ? 'change__bottomline' : ''
+                }`}
+            >
                 <span className='list__info-title'>{title}</span>
                 <span className='list__info-author'>{artist}</span>
             </div>

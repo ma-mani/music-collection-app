@@ -6,9 +6,11 @@ import AlbumCard from './AlbumCard';
 interface Props {
     data: Album[];
     title: string;
+    onToggleId: (id: string) => void;
+    savedAlbumIds: string[];
 }
 
-const AlbumList = ({data, title}: Props) => {
+const AlbumList = ({data, title, onToggleId, savedAlbumIds}: Props) => {
     return (
         <div className='album'>
             <h2>{title}</h2>
@@ -20,6 +22,9 @@ const AlbumList = ({data, title}: Props) => {
                         title={item.title}
                         image={item.image}
                         tracks={item.tracks}
+                        onToggleId={onToggleId}
+                        id={item.id}
+                        savedAlbumIds={savedAlbumIds}
                     />
                 ))}
             </ul>

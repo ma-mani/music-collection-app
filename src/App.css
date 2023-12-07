@@ -4,3 +4,21 @@
     align-items: center;
     gap: 3.2rem;
 }
+
+.loader {
+    border: 1rem solid var(--color-spinner);
+    border-top: 1rem solid var(--color-primary-light);
+    border-radius: 50%;
+    width: 8rem;
+    height: 8rem;
+    animation: spinner 1s linear infinite;
+}
+
+@keyframes spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
