@@ -1,33 +1,18 @@
-import {useEffect, useState} from 'react';
-import useLocalStorageState from 'use-local-storage-state';
+import { useEffect, useState } from 'react';
 
 import AlbumList from '../Components/AlbumList';
-import {Album} from '../types/data';
+import { Album } from '../types/data';
 
-const Albums = () => {
+interface Props {
+    onToggleId: (id: string) => void;
+    savedAlbumIds: string[];
+}
+
+const Albums = ({onToggleId, savedAlbumIds}: Props) => {
     const [savedData, setSavedData] = useState<Album[]>([]);
     const [isLoading, setIsLoading] = useState<Boolean>(false);
 
-    const [savedAlbumIds, setSavedAlbumIds] = useLocalStorageState<string[]>(
-        'savedAlbumIds',
-        {
-            defaultValue: [],
-        },
-    );
-
     const baseURL = 'https://neuefische-spotify-proxy.vercel.app/api';
-
-    const handleToggleSavedAlbum = (newId: string) => {
-        if (savedAlbumIds.includes(newId)) {
-            // remove id
-            setSavedAlbumIds((prevAlbumIds) =>
-                prevAlbumIds.filter((prevId) => prevId !== newId),
-            );
-        } else {
-            // add id
-            setSavedAlbumIds((prevAlbumIds) => [newId, ...prevAlbumIds]);
-        }
-    };
 
     useEffect(() => {
         async function fetchSavedData() {
@@ -55,7 +40,7 @@ const Albums = () => {
                 <p className='loader'></p>
             ) : (
                 <AlbumList
-                    onToggleId={handleToggleSavedAlbum}
+                    onToggleId={onToggleId}
                     data={savedData}
                     title={'Featured'}
                     savedAlbumIds={savedAlbumIds}
